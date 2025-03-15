@@ -1,42 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void solve();
-
-void solve() {
-
-    int x, y;
+int main() {
+    double x; // Thu nhập cá nhân theo tháng (triệu VND)
+    int y;    // Số người phụ thuộc
 
     cin >> x >> y;
-    x = x-11-y*4.4;
 
-    if(x <= 5) {
-        if(x <= 0) 
-            cout << 1 << " " << 0;
-        else
-            cout << 1 << " " << x*50000; 
-    }
-    else if(x > 5 && x <= 10)
-        cout << 2 << " " << (long long) (x*100000-250000+1);
-    else if(x > 10 && x <= 18)
-        cout << 3 << " " << (long long) (x*150000-750000+1);
-    else if(x > 18 && x <= 32)
-        cout << 4 << " " << (long long) (x*200000-1650000+1);
-    else if(x > 32 && x <= 52)
-        cout << 5 << " " << (long long) (x*250000-3250000+1);
-    else if(x > 52 && x <= 80)
-        cout << 6 << " " << (long long) (x*300000-5850000+1);
-    else {
-        if((long long)(x*350000 >= 1000000000000))
-            cout << 7 << " " << (long long) (x*350000-9850000);
-        else
-            cout << 7 << " " << (long long) (x*350000-9850000+1);    
+    // Tính thu nhập tính thuế (TN)
+    double TN = x - (11 + y * 4.4);// ví dụ lương 50 triệu thì chỉ tính thuế dựa trên 30,2 triệu thôi vì được giảm trừ 11 triệu và 4,4 triệu cho mỗi người phụ thuộc
+
+    // Nếu TN <= 0, không phải nộp thuế
+    if (TN <= 0) {
+        cout << "1 0" << endl;
+        return 0;
     }
 
-}
+    int bacThue;
+    double thuePhaiNop = 0.0;
 
-int main() {
+    // Xác định bậc thuế và tính thuế dựa trên bảng thuế lũy tiến
+    if (TN <= 5) {
+        bacThue = 1;
+        thuePhaiNop = TN * 0.05;
+    } else if (TN <= 10) {
+        bacThue = 2;
+        thuePhaiNop = TN * 0.1 - 0.25;
+    } else if (TN <= 18) {
+        bacThue = 3;
+        thuePhaiNop = TN * 0.15 - 0.75;
+    } else if (TN <= 32) {
+        bacThue = 4;
+        thuePhaiNop = TN * 0.2 - 1.65;
+    } else if (TN <= 52) {
+        bacThue = 5;
+        thuePhaiNop = TN * 0.25 - 3.25;
+    } else if (TN <= 80) {
+        bacThue = 6;
+        thuePhaiNop = TN * 0.3 - 5.85;
+    } else {
+        bacThue = 7;
+        thuePhaiNop = TN * 0.35 - 9.85;
+    }
 
-    solve();
+    // Xuất kết quả với 2 chữ số thập phân
+    cout << bacThue << " " << fixed << setprecision(0) << thuePhaiNop*1000000 << endl;// nhân 1 triệu để đổi tiền sang triệu
+
     return 0;
 }
